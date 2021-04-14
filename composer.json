@@ -1,0 +1,14 @@
+{
+    "name": "beta/bitrix-psr18",
+    "description": "PSR-18 adapter for Bitrix",
+    "license": "MIT",
+    "require": {
+        "psr/http-client": "^1.0",
+        "guzzlehttp/psr7": "^1.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "BitrixPSR18\\": "src/"
+        }
+    }
+}
