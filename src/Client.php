@@ -5,6 +5,7 @@ namespace BitrixPSR18;
 
 
 use Bitrix\Main\Web\HttpClient;
+use Bitrix\Main\Web\HttpHeaders;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
@@ -39,6 +40,20 @@ class Client implements ClientInterface
     }
 
     /**
+     * @param HttpHeaders $headers
+     * @return array
+     */
+    private function normalizeHeader(HttpHeaders $headers): array
+    {
+        $result = [];
+        foreach ($headers as $key => $value) {
+            $result[$key] = implode(", ", (array)$value);
+        }
+
+        return $result;
+    }
+
+    /**
      * @link https://github.com/php-http/multipart-stream-builder use for multipart request
      *
      * @param RequestInterface $request
@@ -46,7 +61,7 @@ class Client implements ClientInterface
      */
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
-        $method = strtolower($request->getMethod());
+        $method = strtoupper($request->getMethod());
         $bxClient = clone $this->httpClient;
         $this->loadHeaders($bxClient, $request);
 
@@ -61,6 +76,6 @@ class Client implements ClientInterface
             $responseBody = null;
         }
 
-        return new Response($bxClient->getStatus(), $bxClient->getHeaders()->toArray(), $responseBody);
+        return new Response($bxClient->getStatus(), $this->normalizeHeader($bxClient->getHeaders()), $responseBody);
     }
 }
