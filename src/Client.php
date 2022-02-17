@@ -1,8 +1,6 @@
 <?php
 
-
 namespace BitrixPSR18;
-
 
 use Bitrix\Main\Web\HttpClient;
 use Bitrix\Main\Web\HttpHeaders;
