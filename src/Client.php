@@ -56,6 +56,7 @@ class Client implements ClientInterface
      *
      * @param RequestInterface $request
      * @return ResponseInterface
+     * @throws ClientException
      */
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
@@ -72,6 +73,13 @@ class Client implements ClientInterface
         $responseBody = $bxClient->getResult();
         if (empty($responseBody)) {
             $responseBody = null;
+        }
+
+        if ($bxClient->getError()) {
+            throw new ClientException(
+                'ERROR sendRequest: ' .
+                implode(' ', $bxClient->getError())
+            );
         }
 
         return new Response($bxClient->getStatus(), $this->normalizeHeader($bxClient->getHeaders()), $responseBody);
