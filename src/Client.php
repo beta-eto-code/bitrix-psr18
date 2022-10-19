@@ -75,8 +75,11 @@ class Client implements ClientInterface
             $responseBody = null;
         }
 
-        if($bxClient->getError()) {
-            throw new ClientExceptionInterface('ERROR sendRequest: '.implode(' ', $bxClient->getError()));
+        if ($bxClient->getError()) {
+            throw new ClientExceptionInterface(
+                'ERROR sendRequest: ' .
+                implode(' ', $bxClient->getError())
+            );
         }
 
         return new Response($bxClient->getStatus(), $this->normalizeHeader($bxClient->getHeaders()), $responseBody);
